@@ -169,3 +169,19 @@ Run the Python 3.12 multi-threaded CORS server:
 python server.py
 ```
 Open **[http://localhost:5173](http://localhost:5173)** in any modern web browser.
+
+---
+
+## 10. Deploying to Vercel
+This repository is pre-configured for instant zero-configuration deployment to **Vercel**:
+- `vercel.json`: Configures clean routes and serverless API handlers for Gemma 4.
+- `package.json`: Lightweight package descriptor for Vercel build detection.
+- `api/gemma.js`: Secure serverless proxy routing to Google's `gemma-4-26b-a4b-it` model.
+- `api/health.js`: Health status and latency verification endpoint.
+
+### Deploy Steps:
+1. Import `Sriveni26/thebraincells` into your [Vercel Dashboard](https://vercel.com/new).
+2. Add your Environment Variable (Optional, user can also enter key in the UI settings):
+   - `GEMINI_API_KEY`: Your Google AI Studio / Gemini API Key.
+3. Click **Deploy**. Vercel will build and serve your app globally with edge routing!
+
