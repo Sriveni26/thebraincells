@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LearnPlay - AI Adaptive Learning &amp; Educational Mini-Game Platform</title>
+  <meta name="description" content="Transform academic paragraphs into interactive quizzes and educational mini-games powered by Gemma 4 with adaptive difficulty loops.">
+  
+  <!-- Favicon / Brand SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%237c4dff'/><stop offset='100%' stop-color='%2300f0ff'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='%23070814'/><path d='M50 18 L78 35 L78 65 L50 82 L22 65 L22 35 Z' fill='url(%23g)'/></svg>">
+
+  <!-- Core Brand Theme Stylesheet -->
+  <link rel="stylesheet" href="brand/theme.css">
+</head>
+<body>
+  <!-- Hidden SVG Gradients for Icons -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <linearGradient id="gemmaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#7c4dff" />
+        <stop offset="50%" stop-color="#9e75ff" />
+        <stop offset="100%" stop-color="#00f0ff" />
+      </linearGradient>
+      <linearGradient id="flameGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#ff3366" />
+        <stop offset="60%" stop-color="#ff7849" />
+        <stop offset="100%" stop-color="#ffd600" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="app-container" id="app-root">
+    <!-- ====================================================================
+         BRAND HEADER
+         ==================================================================== -->
+    <header class="brand-header" id="brand-header" role="banner">
+      <div class="brand-identity" id="brand-identity">
+        <div class="brand-logo-gem" id="brand-logo-gem" title="Powered by Google Gemma 4">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="url(#gemmaGradient)"/>
+            <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="url(#gemmaGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <div class="brand-name">
+            LearnPlay
+            <span class="brand-tag" id="active-engine-tag">Gemma 4</span>
+          </div>
+          <span class="brand-subtitle">Adaptive Intelligence Engine &amp; Academic Mini-Games</span>
+        </div>
+      </div>
+
+      <!-- Real-time Gamification Stats Bar -->
+      <div class="game-stats-bar" id="game-stats-bar" role="status" aria-label="Player Progress">
+        <div class="stat-chip rank" id="stat-rank" title="Player Academic Rank">
+          <span>🎓</span>
+          <span id="rank-name-display">Beginner Learner</span>
+        </div>
+        <div class="stat-chip xp" id="stat-xp" title="Total Experience Points">
+          <span>⚡</span>
+          <span id="xp-counter-display">0 XP</span>
+        </div>
+        <div class="stat-chip streak" id="stat-streak" title="Daily &amp; Question Streak">
+          <span>🔥</span>
+          <span id="streak-counter-display">0x Streak</span>
+        </div>
+        <div class="stat-chip coins" id="stat-coins" title="Academic Coins">
+          <span>🪙</span>
+          <span id="coins-counter-display">0 Coins</span>
+        </div>
+      </div>
+
+      <!-- Actions: Engine Switcher, Audio, Inspector, Settings -->
+      <div class="header-actions" id="header-actions">
+        <button class="engine-selector-badge" id="btn-engine-toggle" title="Switch AI Engine: Google Cloud vs Local Ollama" aria-haspopup="dialog">
+          <span class="engine-indicator-dot" id="engine-status-dot"></span>
+          <span id="engine-status-text">Google: gemma-4-26b-a4b-it</span>
+        </button>
+
+        <button class="btn-icon" id="btn-audio-toggle" title="Toggle Procedural WebAudio Effects" aria-label="Toggle Audio">
+          <span id="audio-icon">🔊</span>
+        </button>
+
+        <button class="btn-icon" id="btn-inspector-toggle" title="Live AI Prompt &amp; Latency Inspector" aria-label="Inspect AI Prompts">
+          <span>🧠</span>
+        </button>
+
+        <button class="btn-icon" id="btn-settings-toggle" title="Engine Configuration &amp; API Keys" aria-label="Open Settings">
+          <span>⚙️</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         NAVIGATION TABS
+         ==================================================================== -->
+    <nav class="app-nav-tabs" id="app-nav-tabs" role="navigation" aria-label="Main Navigation">
+      <button class="nav-tab-btn active" id="tab-input" data-target="view-input">
+        <span>📝</span>
+        <span>Study Material</span>
+      </button>
+      <button class="nav-tab-btn" id="tab-game" data-target="view-game">
+        <span>🎮</span>
+        <span>Game Arena</span>
+      </button>
+      <button class="nav-tab-btn" id="tab-boss" data-target="view-boss">
+        <span>⚔️</span>
+        <span>Boss Battle</span>
+      </button>
+      <button class="nav-tab-btn" id="tab-dashboard" data-target="view-dashboard">
+        <span>📊</span>
+        <span>Mastery &amp; Analytics</span>
+      </button>
+      <button class="nav-tab-btn" id="tab-revision" data-target="view-revision">
+        <span>🔄</span>
+        <span>Revision Queue</span>
+      </button>
+    </nav>
+
+    <!-- ====================================================================
+         MAIN APPLICATION STAGE
+         ==================================================================== -->
+    <main class="main-stage" id="main-stage" role="main">
+      <!-- 1. STUDY MATERIAL & INPUT VIEW -->
+      <section class="view-section active" id="view-input" aria-labelledby="heading-input">
+        <div id="input-container-slot"></div>
+      </section>
+
+      <!-- 2. GAME ARENA VIEW -->
+      <section class="view-section" id="view-game" aria-labelledby="heading-game">
+        <div id="game-container-slot"></div>
+      </section>
+
+      <!-- 3. BOSS BATTLE VIEW -->
+      <section class="view-section" id="view-boss" aria-labelledby="heading-boss">
+        <div id="boss-container-slot"></div>
+      </section>
+
+      <!-- 4. MASTERY & DASHBOARD VIEW -->
+      <section class="view-section" id="view-dashboard" aria-labelledby="heading-dashboard">
+        <div id="dashboard-container-slot"></div>
+      </section>
+
+      <!-- 5. REVISION QUEUE VIEW -->
+      <section class="view-section" id="view-revision" aria-labelledby="heading-revision">
+        <div id="revision-container-slot"></div>
+      </section>
+    </main>
+
+    <!-- ====================================================================
+         AI TUTOR SLIDE-OVER DRAWER (ADAPTIVE REMEDIATION)
+         ==================================================================== -->
+    <aside class="tutor-drawer" id="tutor-drawer" role="complementary" aria-label="AI Tutor Guidance">
+      <div class="tutor-header">
+        <div class="tutor-avatar-wrap">
+          <div class="tutor-avatar">
+            <span>✨</span>
+          </div>
+          <div>
+            <h3 class="tutor-title">Gemma 4 Adaptive Tutor</h3>
+            <span class="tutor-badge" id="tutor-concept-badge">Concept Remediation</span>
+          </div>
+        </div>
+        <button class="btn-icon" id="btn-close-tutor" title="Dismiss Tutor" aria-label="Close Tutor">
+          <span>✕</span>
+        </button>
+      </div>
+
+      <div class="tutor-body" id="tutor-content">
+        <!-- Tutor guidance injected dynamically -->
+      </div>
+
+      <div class="tutor-actions">
+        <button class="btn btn-secondary btn-sm" id="btn-tutor-hint">
+          <span>💡</span>
+          <span>Show Extra Hint</span>
+        </button>
+        <button class="btn btn-primary btn-sm" id="btn-tutor-retry-pattern">
+          <span>🔄</span>
+          <span>Try This Concept In A New Way (+70 XP)</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         SETTINGS MODAL DIALOG
+         ==================================================================== -->
+    <div class="modal-overlay" id="modal-settings" role="dialog" aria-modal="true" aria-labelledby="modal-settings-title">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modal-settings-title">⚙️ AI Engine &amp; Platform Configuration</h2>
+          <button class="btn-icon" id="btn-close-settings" aria-label="Close Settings">✕</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Active AI Engine
+            <span style="color: var(--secondary); font-size: 0.78rem;">Google API or Local Ollama</span>
+          </label>
+          <div class="chip-grid">
+            <input type="radio" name="engineChoice" id="engine-google" class="chip-radio" value="google" checked>
+            <label for="engine-google" class="chip-label">
+              <span>☁️</span>
+              <span>Google API (gemma-4-26b-a4b-it)</span>
+            </label>
+
+            <input type="radio" name="engineChoice" id="engine-ollama" class="chip-radio" value="ollama">
+            <label for="engine-ollama" class="chip-label">
+              <span>💻</span>
+              <span>Local Ollama (gemma4 @ 11434)</span>
+            </label>
+
+            <input type="radio" name="engineChoice" id="engine-demo" class="chip-radio" value="demo">
+            <label for="engine-demo" class="chip-label">
+              <span>⚡</span>
+              <span>Offline Academic Demo Mode</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" id="google-config-group">
+          <label class="form-label" for="google-api-key">
+            Google Gemini API Key
+            <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="color: var(--primary-light); font-size: 0.8rem;">Get Free API Key ↗</a>
+          </label>
+          <input type="password" id="google-api-key" class="input-text" placeholder="AIzaSy... (Saved locally in your browser)">
+          <span style="font-size: 0.75rem; color: var(--text-secondary);">Directly queries Google's hosted `gemma-4-26b-a4b-it` model via REST API.</span>
+        </div>
+
+        <div class="form-group" id="ollama-config-group" style="display: none;">
+          <label class="form-label" for="ollama-endpoint">
+            Ollama Chat Endpoint
+            <span style="font-size: 0.75rem; color: var(--secondary);">Default: http://127.0.0.1:11434/api/chat</span>
+          </label>
+          <input type="text" id="ollama-endpoint" class="input-text" value="http://127.0.0.1:11434/api/chat">
+          <div style="display: flex; gap: 10px; margin-top: 6px;">
+            <button class="btn btn-secondary btn-sm" id="btn-test-ollama">Test Ollama Connection</button>
+            <span id="ollama-test-status" style="font-size: 0.82rem; align-self: center;"></span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+          <button class="btn btn-secondary btn-sm" id="btn-cancel-settings">Cancel</button>
+          <button class="btn btn-primary btn-sm" id="btn-save-settings">Save &amp; Apply</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         AI PROMPT & LATENCY INSPECTOR MODAL
+         ==================================================================== -->
+    <div class="modal-overlay" id="modal-inspector" role="dialog" aria-modal="true" aria-labelledby="modal-inspector-title">
+      <div class="modal-box" style="max-width: 780px;">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modal-inspector-title">🧠 Gemma 4 Prompt &amp; Latency Inspector</h2>
+          <button class="btn-icon" id="btn-close-inspector" aria-label="Close Inspector">✕</button>
+        </div>
+        <div style="display: flex; gap: 16px; margin-bottom: 8px;">
+          <div class="stat-chip xp">
+            <span>Model:</span>
+            <span id="inspect-model-name">gemma-4-26b-a4b-it</span>
+          </div>
+          <div class="stat-chip streak">
+            <span>Latency:</span>
+            <span id="inspect-latency">0 ms</span>
+          </div>
+          <div class="stat-chip coins">
+            <span>Output Tokens:</span>
+            <span id="inspect-token-count">0</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">System Instruction &amp; Schema Request</label>
+          <pre id="inspect-prompt-display" style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.78rem; max-height: 180px; overflow-y: auto; color: var(--secondary);"></pre>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Raw Model JSON Output</label>
+          <pre id="inspect-response-display" style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.78rem; max-height: 220px; overflow-y: auto; color: var(--emerald-success);"></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Toast Container -->
+    <div id="toast-container" style="position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; pointer-events: none;"></div>
+  </div>
+
+  <!-- Main ES Module Script -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

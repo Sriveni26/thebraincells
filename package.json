@@ -1,0 +1,20 @@
+{
+  "name": "learnplay",
+  "version": "1.0.0",
+  "description": "AI-Powered Gamified Adaptive Learning Platform powered by Google Gemma 4",
+  "scripts": {
+    "dev": "python server.py",
+    "start": "python server.py",
+    "build": "echo 'Vercel static build ready'"
+  },
+  "keywords": [
+    "learnplay",
+    "gemma4",
+    "adaptive-learning",
+    "gamification",
+    "education",
+    "ai"
+  ],
+  "author": "Google Antigravity Team",
+  "license": "MIT"
+}
